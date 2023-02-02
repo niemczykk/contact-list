@@ -1,0 +1,55 @@
+@using netpc_e1.Models
+@model IEnumerable<Contact>
+@{
+    ViewData["Title"] = "Contacts List";
+}
+
+<div class="text-center">
+    <h1>Contacts Page</h1>
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone Number</th>
+                <th>Subcategory</th>
+                @if (User.Identity.IsAuthenticated){
+                    <th>
+                        Options
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model){
+                <tr>
+                    <td width="35%">
+                        @item.FirstName
+                    </td>
+                    <td width="35%">
+                        @item.LastName
+                    </td>
+                    <td width="20%">
+                        @item.PhoneNumber
+                    </td>
+                    <td width="20%">
+                        @item.SubcategoryObj.SubcategoryName
+                    </td>
+                    @if (User.Identity.IsAuthenticated){
+                        <td>
+                            <a asp-controller="Contact" asp-action="Edit" asp-route-id="@item.ContactId">Edit</a>
+                            <form method="post" asp-controller="Contact" asp-action="Delete" asp-route-id="@item.ContactId">
+                                <button type="submit">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (User.Identity.IsAuthenticated){
+    <a asp-controller="Contact" asp-action="Add">Add new contact</a>
+    }
+</div>

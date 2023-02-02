@@ -1,0 +1,73 @@
+@using netpc_e1.Models
+@model Contact
+@{
+    ViewData["Title"] = "Create New Contact";
+
+    @* Unpack ViewData to usable variables *@
+    IEnumerable<Category> Categories = ViewData["allCategories"] as IEnumerable<Category>;
+    IEnumerable<Subcategory> Subcategories = ViewData["allSubcategories"] as IEnumerable<Subcategory>;
+}
+
+<div class="text-center">
+    <form asp-controller="Contact" asp-action="Create" method="post">
+        <div>
+            <input type="text" placeholder="First name" asp-for="FirstName"></input>
+        </div>
+        <div>
+            <input type="text" placeholder="Last name" asp-for="LastName"></input>
+        </div>
+        <div>
+            <input type="email" placeholder="Email" asp-for="Email"></input>
+        </div>
+        <div>
+            <input type="text" placeholder="Phone number" asp-for="PhoneNumber"></input>
+        </div>
+        <div>
+            <input type="date" placeholder="Birth date" asp-for="BirthDate"></input>
+        </div>
+        <div>
+            <select name="Categories" id="Categories">
+                @foreach (var item in Categories!) {
+                    <option value="@item.CategoryId">@item.CategoryName</option>
+                }
+            </select>
+        </div>
+        <div>
+            <select name="Subcategories" id="Subcategories" asp-for="SecondCategory">
+                @foreach (var item in Subcategories!) {
+                    <option value="@item.SubcategoryId">@item.SubcategoryName</option>
+                }
+            </select>
+            <input id="newSubcategory" name="newSubcategory" type="text" placeholder="New subcategory"></input>
+        </div>
+        <input type="submit" id="submit" value="Create"></input>
+    </form>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $("#newSubcategory").hide();
+        var categoryId = 1;
+
+        $("#Categories").change(function () {
+            categoryId = $('#Categories').val();
+            var items = '';
+
+            if(categoryId != 3) {
+                $("#newSubcategory").hide();
+                $("#Subcategories").show();
+                $("#Subcategories").empty();
+                $.get("@Url.Action("GetSubcategories")", { id: categoryId }, function(data) {
+                    $.each(data, function(i, option) {
+                        $('#Subcategories').append('<option value="'+ option.subcategoryId + '">' + option.subcategoryName + " </option>");
+                    });
+                });
+            } else {
+                $("#newSubcategory").show();
+                $("#Subcategories").hide();
+            }
+        }).change();
+    });
+    </script>
+}

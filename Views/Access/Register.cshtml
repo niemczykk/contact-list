@@ -1,0 +1,21 @@
+@using netpc_e1.Models;
+@model User;
+@{
+    ViewData["Title"] = "Register Page";
+}
+
+<div class="text-center">
+    <form asp-controller="Access" asp-action="Register" method="POST">
+        @Html.ValidationSummary()
+        <div>
+            <label>Username</label>
+            <input type="text" asp-for="Username"></input>
+            @Html.ValidationMessage("Username")
+        </div>
+        <div>
+            <label>Password</label>
+            <input type="password" asp-for="UserPassword"></input>
+        </div>
+        <input type="submit" value="Register"></input>
+    </form>
+</div>

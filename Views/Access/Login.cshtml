@@ -1,0 +1,19 @@
+@using netpc_e1.Models;
+@model User;
+@{
+    ViewData["Title"] = "Login Page";
+}
+
+<div class="text-center">
+    <form asp-controller="Access" asp-action="Login" method="POST">
+        <div>
+            <label>Username</label>
+            <input type="text" asp-for="Username"></input>
+        </div>
+        <div>
+            <label>Password</label>
+            <input type="password" asp-for="UserPassword"></input>
+        </div>
+        <input type="submit" value="Log in"></input>
+    </form>
+</div>
